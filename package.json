@@ -1,0 +1,29 @@
+{
+  "name": "Backbone.GroupedCollection",
+  "version": "0.0.1",
+  "description": "Implement listviews with item grouping and ordering",
+  "main": "backbone.grouped-collection.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/p3drosola/Backbone.GroupedCollection.git"
+  },
+  "keywords": [
+    "Backbone",
+    "Marionette",
+    "grouped",
+    "collection"
+  ],
+  "author": "Pedro Solá <p3dro.sola@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "7154c5e376ad257a0601152b104609f784abcc03",
+  "dependencies": {
+    "underscore": "~1.5.1",
+    "backbone": "~1.0.0",
+    "sinon": "~1.7.3",
+    "backbone-virtual-collection": "~0.4.0"
+  }
+}
