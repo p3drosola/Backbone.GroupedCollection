@@ -1,6 +1,6 @@
 {
   "name": "Backbone.GroupedCollection",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Implement listviews with item grouping and ordering",
   "main": "backbone.grouped-collection.js",
   "scripts": {
