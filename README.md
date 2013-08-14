@@ -66,6 +66,9 @@ grouped_animals.pluck('id'); // ['black', 'green']
 
 ```
 
+## Options
+
+
 #### collection 
 The base collection.
 
@@ -79,7 +82,7 @@ to that of a marionette view by specifying a `close_with` option. (it can also b
 #### GroupCollection
 Specifies an alternative 'class' for the GroupCollection to have. It should extend from Backbone.Collection.
 
-### Group
+#### Group
 Specifes an alternative 'class' for the Groups to have. It should extend from Backbone.Model;
 
 
