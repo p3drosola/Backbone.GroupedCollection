@@ -107,7 +107,7 @@
 
     onReset.call(options);
 
-    options.group_collection.listenTo(options.collection, 'add', onAdd.bind(options));
+    options.group_collection.listenTo(options.collection, 'add change', onAdd.bind(options));
     options.group_collection.listenTo(options.collection, 'remove', onRemove.bind(options));
     options.group_collection.listenTo(options.collection, 'reset', onReset.bind(options));
 

@@ -122,6 +122,19 @@ describe('Backbone.GroupedCollection', function () {
       assert.equal(gc.get('Cats').vc.length, 1);
       assert.equal(gc.length, 2);
     });
+    it('handles changes to the models, what impact their grouping', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
 
+      collection.findWhere({name: 'Frank'}).set({club: 'HODOR'});
+
+      assert.equal(gc.get('Panthers').vc.length, 1);
+      assert.equal(gc.get('Penguins').vc.length, 1);
+      assert.equal(gc.get('HODOR').vc.length, 1);
+    });
   });
 });
