@@ -1,8 +1,8 @@
   /*jshint indent:2 */
 (function (global) {
-  'use strict';
 
-  var GroupModel, GroupCollection,
+  var GroupModel,
+      GroupCollection,
       Backbone = global.Backbone,
       _ = global._;
 
@@ -12,8 +12,8 @@
   }
 
   GroupCollection = Backbone.Collection.extend({
-    closeWith: function (view) {
-      view.on('close', this.stopListening);
+    closeWith: function (event_emitter) {
+      event_emitter.on('close', this.stopListening);
     }
   });
 
@@ -31,8 +31,10 @@
     var options = this,
         group = new (options.GroupModel || GroupModel)({id: group_id});
 
-    group.vc = new Backbone.VirtualCollection(this.collection, function (model) {
-      return options.groupBy(model) === group_id;
+    group.vc = new Backbone.VirtualCollection(this.collection, {
+      filter:function (model) {
+        return options.groupBy(model) === group_id;
+      }
     });
 
     return group;
@@ -47,8 +49,29 @@
     var id = this.groupBy(model);
 
     if (!this.group_collection.get(id)) {
-      this.group_collection.add(createGroup(id));
+      this.group_collection.add(createGroup.call(this, id));
     }
+  }
+
+  /**
+   * Handles the remove event on the base collection
+   * @param  {Model} model
+   */
+  function onRemove(model) {
+    var id = this.groupBy(model),
+        group = this.group_collection.get(id);
+
+    if (!group.vc.length) {
+      this.group_collection.remove(group);
+    }
+  }
+
+  /**
+   * Handles the reset event on the base collection
+   */
+  function onReset() {
+    var group_ids = _.uniq(this.collection.map(this.groupBy));
+    this.group_collection.reset(_.map(group_ids, createGroup.bind(this)));
   }
 
   /**
@@ -77,23 +100,22 @@
    * @return {Collection}
    */
   function buildGroupedCollection(options) {
-    var group_ids;
 
     needs(options, 'collection', 'The base collection to group');
     needs(options, 'groupBy', 'The function that returns a model\'s group id');
-
     options.group_collection = new (options.GroupCollection || GroupCollection)();
-    group_ids = _.uniq(options.collection.map(options.groupBy));
 
-    options.group_collection.reset(_.map(group_ids, _.bind(createGroup, options)));
-    options.group_collection.listenTo(options.collection, 'add', _.bind(onAdd, options));
-    // change, remove, reset
+    onReset.call(options);
+
+    options.group_collection.listenTo(options.collection, 'add', onAdd.bind(options));
+    options.group_collection.listenTo(options.collection, 'remove', onRemove.bind(options));
+    options.group_collection.listenTo(options.collection, 'reset', onReset.bind(options));
 
     return options.group_collection;
-  };
+  }
 
 
-  if (module && module.exports) {
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       buildGroupedCollection: buildGroupedCollection,
       GroupModel: GroupModel,

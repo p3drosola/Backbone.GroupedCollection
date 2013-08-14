@@ -24,6 +24,6 @@
     "underscore": "~1.5.1",
     "backbone": "~1.0.0",
     "sinon": "~1.7.3",
-    "backbone-virtual-collection": "~0.4.0"
+    "backbone-virtual-collection": "0.4.5"
   }
 }

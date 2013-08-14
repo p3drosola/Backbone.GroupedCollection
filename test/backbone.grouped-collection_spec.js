@@ -60,12 +60,68 @@ describe('Backbone.GroupedCollection', function () {
           return model.get('club');
         }
       });
-
-      assert.equal(gc.length, 2);
       assert.deepEqual(gc.pluck('id').sort(), ['Penguins', 'Panthers'].sort());
-      console.log(gc.get('Panthers').vc.map(function (i){return i.get('name'); }));
       assert.equal(gc.get('Penguins').vc.length, 2);
       assert.equal(gc.get('Panthers').vc.length, 1);
     });
+    it('handles adds to the parent collection correctly', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      assert.equal(gc.get('Panthers').vc.length, 1);
+      collection.add({name: 'Hillary', club: 'Panthers'});
+      assert.equal(gc.get('Panthers').vc.length, 2);
+    });
+    it('creates a new group if necesary', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      collection.add([{club: 'Penguins'}, {club: 'Rats'}]);
+      assert.equal(gc.length, 3);
+      assert.equal(gc.get('Rats').vc.length, 1);
+    });
+    it('handles remove from the parent collection correctly', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      assert.equal(gc.get('Penguins').vc.length, 2);
+      collection.remove(collection.findWhere({name: 'Bob'}));
+      assert.equal(gc.get('Penguins').vc.length, 1);
+    });
+    it('removes a group when it is empty', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      collection.remove(collection.findWhere({club: 'Panthers'}));
+      assert.equal(collection.get('Panthers'), undefined);
+    });
+    it('handles reset of the parent collection correctly', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      assert.equal(gc.get('Penguins').vc.length, 2);
+
+      collection.reset([{club: 'Whales'}, {club: 'Whales'}, {club: 'Cats'}]);
+
+      assert.equal(gc.get('Whales').vc.length, 2);
+      assert.equal(gc.get('Cats').vc.length, 1);
+      assert.equal(gc.length, 2);
+    });
+
   });
 });
