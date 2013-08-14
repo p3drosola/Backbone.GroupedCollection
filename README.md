@@ -7,7 +7,7 @@ Backbone.GroupedCollection is for creating interfaces like this
 ![mzl mkdxrqaw 320x480-75](https://f.cloud.github.com/assets/520550/961451/b380a274-04d5-11e3-818d-783b4ec5c915.jpg)
 
 
-This library is useful in the following scenaraio: you have a collection and you want to group the models in the collection into an arbitrary number of groups, based on attributes of the models.
+In which you have a collection and you want to group the models in the collection into an arbitrary number of groups, based on attributes of the models.
 
 Using this library allows you to do some things that could get quite complicated if not, for example:
 
