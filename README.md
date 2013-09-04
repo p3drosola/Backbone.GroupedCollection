@@ -20,7 +20,7 @@ Using this library allows you to do some things that could get quite complicated
 
 ### How does it work?
 
-`Backbone.createGroupedCollection` recieves a base collection and a `groupBy` function. It returns a collection of models (groups).
+`Backbone.buildGroupedCollection` recieves a base collection and a `groupBy` function. It returns a collection of models (groups).
 Each of the groups has it's group identifier as the id, and a special property `vc` which is a [Backbone.VirtualCollection](https://github.com/p3drosola/Backbone.VirtualCollection) of the models that belong in the group.
 
 It works well with Marionette or stand-alone.
@@ -33,7 +33,7 @@ var animals = new Backbone.Collection([
   {name: 'bird', color: 'red'}
 ]);
 
-var grouped_animals = Backbone.createGroupedCollection({
+var grouped_animals = Backbone.buildGroupedCollection({
   collection: animals,
 , groupBy: function (animal) {
     return animal.get('color');
