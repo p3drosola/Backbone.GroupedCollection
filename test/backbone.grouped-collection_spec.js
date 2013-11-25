@@ -20,6 +20,7 @@ describe('Backbone.GroupedCollection', function () {
         {name: 'Jimmy', club: 'Panthers'}
       ]);
     });
+
     it('should return an instance of GroupCollection', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -29,6 +30,7 @@ describe('Backbone.GroupedCollection', function () {
       });
       assert(gc instanceof grouped_collection.GroupCollection);
     });
+
     it('uses the GroupCollection class if passed the parameter', function () {
       var MyGroupCollection = Backbone.Collection.extend({}),
       gc = Backbone.buildGroupedCollection({
@@ -40,6 +42,7 @@ describe('Backbone.GroupedCollection', function () {
       });
       assert(gc instanceof MyGroupCollection);
     });
+
     it('uses the GroupModel class if passed the parameter', function () {
       var MyGroupModel = Backbone.Model.extend({}),
       gc = Backbone.buildGroupedCollection({
@@ -53,6 +56,7 @@ describe('Backbone.GroupedCollection', function () {
         assert(group instanceof MyGroupModel);
       });
     });
+
     it('groups models according to the groupBy function', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -64,6 +68,7 @@ describe('Backbone.GroupedCollection', function () {
       assert.equal(gc.get('Penguins').vc.length, 2);
       assert.equal(gc.get('Panthers').vc.length, 1);
     });
+
     it('handles adds to the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -75,6 +80,7 @@ describe('Backbone.GroupedCollection', function () {
       collection.add({name: 'Hillary', club: 'Panthers'});
       assert.equal(gc.get('Panthers').vc.length, 2);
     });
+
     it('creates a new group if necesary', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -86,6 +92,7 @@ describe('Backbone.GroupedCollection', function () {
       assert.equal(gc.length, 3);
       assert.equal(gc.get('Rats').vc.length, 1);
     });
+
     it('handles remove from the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -97,6 +104,7 @@ describe('Backbone.GroupedCollection', function () {
       collection.remove(collection.findWhere({name: 'Bob'}));
       assert.equal(gc.get('Penguins').vc.length, 1);
     });
+
     it('removes a group when it is empty', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -104,9 +112,24 @@ describe('Backbone.GroupedCollection', function () {
           return model.get('club');
         }
       });
+      assert.equal(gc.length, 2);
       collection.remove(collection.findWhere({club: 'Panthers'}));
       assert.equal(collection.get('Panthers'), undefined);
+      assert.equal(gc.length, 1);
     });
+
+    it('removes a group when it does not match the grouping condition anymore', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      assert.equal(gc.length, 2);
+      collection.get(collection.findWhere({club: 'Panthers'})).set({club: 'Penguins'});
+      assert.equal(gc.length, 1);
+    });
+
     it('handles reset of the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
@@ -122,6 +145,7 @@ describe('Backbone.GroupedCollection', function () {
       assert.equal(gc.get('Cats').vc.length, 1);
       assert.equal(gc.length, 2);
     });
+
     it('handles changes to the models, what impact their grouping', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,

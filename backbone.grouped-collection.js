@@ -1,4 +1,4 @@
-  /*jshint indent:2 */
+/*jshint indent:2 */
 (function (global) {
 
   var GroupModel,
@@ -19,6 +19,11 @@
 
   GroupModel = Backbone.Model;
 
+  function onVcRemove(group_collection, group) {
+    if (!group.vc.length) {
+      group_collection.remove(group);
+    }
+  }
 
   /**
    * Creates a Group model for a given id.
@@ -27,15 +32,17 @@
    * @param {String} group_id
    * @return {Group}
    */
-  function createGroup (group_id) {
-    var options = this,
-        group = new (options.GroupModel || GroupModel)({id: group_id});
+  function createGroup(group_id) {
+    var options = this
+      , Constructor = options.GroupModel || GroupModel
+      , vc, group;
 
-    group.vc = new Backbone.VirtualCollection(this.collection, {
-      filter:function (model) {
-        return options.groupBy(model) === group_id;
-      }
-    });
+    vc = new Backbone.VirtualCollection(this.collection, {filter: function (model) {
+      return options.groupBy(model) === group_id;
+    }});
+    group = new Constructor({id: group_id, vc: vc});
+    group.vc = vc;
+    vc.listenTo(vc, 'remove', _.partial(onVcRemove, this.group_collection, group));
 
     return group;
   }
@@ -55,13 +62,14 @@
 
   /**
    * Handles the remove event on the base collection
+   *
    * @param  {Model} model
    */
   function onRemove(model) {
     var id = this.groupBy(model),
         group = this.group_collection.get(id);
 
-    if (!group.vc.length) {
+    if (group && !group.vc.length) {
       this.group_collection.remove(group);
     }
   }
@@ -100,10 +108,11 @@
    * @return {Collection}
    */
   function buildGroupedCollection(options) {
+    var Constructor = options.GroupCollection || GroupCollection;
 
     needs(options, 'collection', 'The base collection to group');
     needs(options, 'groupBy', 'The function that returns a model\'s group id');
-    options.group_collection = new (options.GroupCollection || GroupCollection)();
+    options.group_collection = new Constructor();
 
     onReset.call(options);
 
