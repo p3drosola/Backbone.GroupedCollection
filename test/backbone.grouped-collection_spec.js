@@ -112,9 +112,24 @@ describe('Backbone.GroupedCollection', function () {
           return model.get('club');
         }
       });
+      assert.equal(gc.length, 2);
       collection.remove(collection.findWhere({club: 'Panthers'}));
       assert.equal(collection.get('Panthers'), undefined);
+      assert.equal(gc.length, 1);
     });
+
+    it('removes a group when it does not match the grouping condition anymore', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        }
+      });
+      assert.equal(gc.length, 2);
+      collection.get(collection.findWhere({club: 'Panthers'})).set({club: 'Penguins'});
+      assert.equal(gc.length, 1);
+    });
+
     it('handles reset of the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
