@@ -1,4 +1,4 @@
-  /*jshint indent:2 */
+/*jshint indent:2 */
 (function (global) {
 
   var GroupModel,
@@ -62,6 +62,7 @@
 
   /**
    * Handles the remove event on the base collection
+   *
    * @param  {Model} model
    */
   function onRemove(model) {
@@ -107,10 +108,11 @@
    * @return {Collection}
    */
   function buildGroupedCollection(options) {
+    var Constructor = options.GroupCollection || GroupCollection;
 
     needs(options, 'collection', 'The base collection to group');
     needs(options, 'groupBy', 'The function that returns a model\'s group id');
-    options.group_collection = new (options.GroupCollection || GroupCollection)();
+    options.group_collection = new Constructor();
 
     onReset.call(options);
 
