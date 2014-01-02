@@ -93,8 +93,9 @@ Specifes an alternative 'class' for the Groups to have. It should extend from Ba
 
 ## Changelog
 ```
-0.0.3  Fixes bug when changing a model failed to create a new Group
-0.0.2  Add GroupCollection & Group options
+0.1.0 Fixes groups not being deleted because a race condition with `VirtualCollection`
+0.0.3 Fixes bug when changing a model failed to create a new Group
+0.0.2 Add GroupCollection & Group options
 ```
 
 ## License
