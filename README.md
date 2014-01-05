@@ -72,7 +72,6 @@ grouped_animals.pluck('id'); // ['black', 'green']
 
 ## Options
 
-
 #### collection
 The base collection.
 
@@ -88,8 +87,6 @@ Specifies an alternative 'class' for the GroupCollection to have. It should exte
 
 #### Group
 Specifes an alternative 'class' for the Groups to have. It should extend from Backbone.Model;
-
-
 
 ## Changelog
 ```
