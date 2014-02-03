@@ -70,6 +70,34 @@ grouped_animals.pluck('id'); // ['black', 'green']
 
 ```
 
+### Recursive Grouping
+
+Somtimes you want to make sub-groups, or infinitely nested groups. For example, you have a shopping list that you want grouped by store, and then within each store, by item type.
+
+```javascript
+var grouped_shopping_list = Backbone.buildGroupedCollection({
+  collection: shopping_list,
+, groupBy: groupByShop
+, Group: Backbone.Model.extend({
+    initialize: function (options) {
+      // options.id is the group id
+      // options.vc is the  virtual collection
+      this.grouped_vc = Backbone.buildGroupedCollection({
+        collection: options.vc
+      , groupBy: groupByItemType
+      })
+    }
+  })
+});
+
+// the items of type "office supplies" from the store "home depot" will be accesible at
+
+grouped_shopping_list.get('home_depot').grouped_vc.get('office_supplies') // retutns a virtual collection 
+
+```
+
+
+
 ## Options
 
 #### collection
