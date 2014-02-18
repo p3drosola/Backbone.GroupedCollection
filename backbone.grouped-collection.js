@@ -51,6 +51,9 @@
 
     Lib._onReset(options);
     options.group_collection.listenTo(options.collection, 'add', _.partial(Lib._onAdd, options));
+    options.group_collection.listenTo(options.collection, 'change', _.partial(Lib._onAdd, options));
+    options.group_collection.listenTo(options.collection, 'remove', _.partial(Lib._onRemove, options));
+    options.group_collection.listenTo(options.collection, 'reset', _.partial(Lib._onReset, options));
 
     return options.group_collection;
   };
@@ -72,10 +75,6 @@
     group = new Constructor({id: group_id, vc: vc});
     group.vc = vc;
     vc.listenTo(vc, 'remove', _.partial(Lib._onVcRemove, options.group_collection, group));
-
-    options.group_collection.listenTo(options.collection, 'change', _.partial(Lib._onAdd, options));
-    options.group_collection.listenTo(options.collection, 'remove', _.partial(Lib._onRemove, options));
-    options.group_collection.listenTo(options.collection, 'reset', _.partial(Lib._onReset, options));
 
     return group;
   };
