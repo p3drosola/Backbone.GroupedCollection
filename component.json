@@ -1,0 +1,24 @@
+{
+  "name": "Backbone.GroupedCollection",
+  "description": "Divide the models of a collection into groups based on attributes of the models",
+  "version": "0.1.0",
+  "keywords": [
+    "backbone",
+    "marrionette",
+    "ender",
+    "teambox"
+  ],
+  "repo": "p3drosola/Backbone.GroupedCollection",
+  "authors": [
+    "Pedro Solá<p3dro.sola@gmail.com>"
+  ],
+  "dependencies": {
+    "jashkenas/backbone": "*",
+    "jashkenas/underscore": "*",
+    "p3drosola/Backbone.VirtualCollection": "*"
+  },
+  "main": "backbone.grouped-collection.js",
+  "scripts": [
+    "backbone.grouped-collection.js"
+  ]
+}
