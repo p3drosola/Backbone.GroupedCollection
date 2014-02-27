@@ -92,7 +92,7 @@ var grouped_shopping_list = Backbone.buildGroupedCollection({
 
 // the items of type "office supplies" from the store "home depot" will be accesible at
 
-grouped_shopping_list.get('home_depot').grouped_vc.get('office_supplies') // retutns a virtual collection 
+grouped_shopping_list.get('home_depot').grouped_vc.get('office_supplies') // retutns a virtual collection
 
 ```
 
@@ -118,6 +118,7 @@ Specifes an alternative 'class' for the Groups to have. It should extend from Ba
 
 ## Changelog
 ```
+0.1.1 Add listeners for 'change', 'remove' and 'reset' only once
 0.1.0 Fixes groups not being deleted because a race condition with `VirtualCollection`
 0.0.3 Fixes bug when changing a model failed to create a new Group
 0.0.2 Add GroupCollection & Group options
