@@ -1,7 +1,7 @@
 {
   "name": "Backbone.GroupedCollection",
   "description": "Divide the models of a collection into groups based on attributes of the models",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "backbone",
     "marrionette",
