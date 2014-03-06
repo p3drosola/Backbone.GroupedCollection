@@ -113,7 +113,7 @@ to that of a marionette view by specifying a `close_with` option. (it can also b
 #### GroupCollection
 Specifies an alternative 'class' for the GroupCollection to have. It should extend from Backbone.Collection.
 
-#### Group
+#### GroupModel
 Specifes an alternative 'class' for the Groups to have. It should extend from Backbone.Model;
 
 ## Changelog
