@@ -1,12 +1,12 @@
-# Backbone.GroupedCollection
+# Backbone GroupedCollection
 
 <a href="http://teambox.com"><img alt="Built at Teambox" src="http://i.imgur.com/hqNPlHe.png"/></a>
 
-![Build Status](https://api.travis-ci.org/p3drosola/Backbone.VirtualCollection.png)
+![Build Status](https://api.travis-ci.org/p3drosola/Backbone.VirtualCollection.svg?branch=master)
 
-Backbone.GroupedCollection is for creating interfaces like this
+Backbone GroupedCollection is for creating dynamic data strcutures like this.
 
-![mzl mkdxrqaw 320x480-75](https://f.cloud.github.com/assets/520550/961451/b380a274-04d5-11e3-818d-783b4ec5c915.jpg)
+![grouped-collection](https://cloud.githubusercontent.com/assets/520550/6483746/cfa04c08-c274-11e4-916a-94eb8571a7e4.png)
 
 
 In which you have a collection and you want to group the models in the collection into an arbitrary number of groups, based on attributes of the models.
@@ -16,7 +16,7 @@ Using this library allows you to do some things that could get quite complicated
 - Sorting groups and models in groups seperately
 - Appending new models to the right group automatically
 - Adding and removing groups when models are added or removed
-
+- Creating a dynamic tree that responds to change events in the models
 
 ### How does it work?
 
