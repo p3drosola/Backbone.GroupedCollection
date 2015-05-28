@@ -69,7 +69,7 @@
     var Constructor = options.GroupModel || Lib.GroupModel,
         vc, group, vc_options;
 
-    vc_options = _.extend(options.vc_options, {
+    vc_options = _.extend(options.vc_options || {}, {
       filter: function (model) {
         return options.groupBy(model) === group_id;
       }
