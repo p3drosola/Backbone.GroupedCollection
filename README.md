@@ -108,7 +108,7 @@ The function that defines the grouping. It recieves a model as the argument, and
 
 #### close_with
 The GroupCollection will continue listening to the base collection untill you call `stopListening()` on it. You can bind the lifespan of a grouped_collection
-to that of a marionette view by specifying a `close_with` option. (it can also be any event emitter that emits a `close` event)
+to that of a marionette view by specifying a `close_with` option. (it can also be any event emitter that emits a `close` or `destroy` event)
 
 #### GroupCollection
 Specifies an alternative 'class' for the GroupCollection to have. It should extend from Backbone.Collection.
@@ -116,8 +116,12 @@ Specifies an alternative 'class' for the GroupCollection to have. It should exte
 #### GroupModel
 Specifes an alternative 'class' for the Groups to have. It should extend from Backbone.Model;
 
+#### vc_options
+Object passed to the virtual collections as options. Use this to configure comparators, etc.
+
 ## Changelog
 ```
+0.1.2 Add vc_options via @masylum. Fix close_with handling
 0.1.1 Add listeners for 'change', 'remove' and 'reset' only once
 0.1.0 Fixes groups not being deleted because a race condition with `VirtualCollection`
 0.0.3 Fixes bug when changing a model failed to create a new Group
