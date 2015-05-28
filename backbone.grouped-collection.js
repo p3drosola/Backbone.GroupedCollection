@@ -73,7 +73,7 @@
       filter: function (model) {
         return options.groupBy(model) === group_id;
       }
-    };
+    });
 
     vc = new Backbone.VirtualCollection(options.collection, vc_options);
     group = new Constructor({id: group_id, vc: vc});
