@@ -67,11 +67,15 @@
    */
   Lib._createGroup = function (options, group_id) {
     var Constructor = options.GroupModel || Lib.GroupModel,
-        vc, group;
+        vc, group, vc_options;
 
-    vc = new Backbone.VirtualCollection(options.collection, {filter: function (model) {
-      return options.groupBy(model) === group_id;
-    }});
+    vc_options = _.extend(options.vc_options, {
+      filter: function (model) {
+        return options.groupBy(model) === group_id;
+      }
+    };
+
+    vc = new Backbone.VirtualCollection(options.collection, vc_options);
     group = new Constructor({id: group_id, vc: vc});
     group.vc = vc;
     vc.listenTo(vc, 'remove', _.partial(Lib._onVcRemove, options.group_collection, group));
