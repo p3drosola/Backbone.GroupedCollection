@@ -57,6 +57,48 @@ describe('Backbone.GroupedCollection', function () {
       });
     });
 
+    it('binds close and remove events of the close_with event emmiter to stopListening', function () {
+      var emitter = _.extend({}, Backbone.Events)
+
+      gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        GroupCollection: Backbone.Collection.extend({
+          stopListening: sinon.stub(),
+        }),
+        groupBy: function (model) {
+          return model.get('club');
+        },
+        close_with: emitter
+      });
+
+      emitter.trigger('close');
+      emitter.trigger('destroy');
+
+      assert.equal(gc.stopListening.callCount, 2);
+    });
+
+    it('propagates close_with event emmiter to the virtual collections', function () {
+      var emitter = _.extend({}, Backbone.Events)
+
+      sinon.stub(Backbone.VirtualCollection.prototype, 'stopListening');
+
+      gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        groupBy: function (model) {
+          return model.get('club');
+        },
+        close_with: emitter
+      });
+
+      assert(!gc.at(0).vc.stopListening.called);
+      emitter.trigger('close');
+
+      assert(gc.at(0).vc.stopListening.called);
+      assert(gc.at(1).vc.stopListening.called);
+
+      Backbone.VirtualCollection.prototype.stopListening.restore();
+    });
+
     it('groups models according to the groupBy function', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,

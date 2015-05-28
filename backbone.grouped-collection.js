@@ -47,6 +47,7 @@
 
     needs(options, 'collection', 'The base collection to group');
     needs(options, 'groupBy', 'The function that returns a model\'s group id');
+
     options.group_collection = new Constructor();
 
     Lib._onReset(options);
@@ -54,6 +55,17 @@
     options.group_collection.listenTo(options.collection, 'change', _.partial(Lib._onAdd, options));
     options.group_collection.listenTo(options.collection, 'remove', _.partial(Lib._onRemove, options));
     options.group_collection.listenTo(options.collection, 'reset', _.partial(Lib._onReset, options));
+
+
+    if (!options.close_with) {
+      console.warn("You should provide an event emitter via `close_with`," +
+        " or else the listeners will never be unbound!");
+    } else {
+      options.group_collection.listenToOnce(options.close_with,
+          'close', options.group_collection.stopListening);
+      options.group_collection.listenToOnce(options.close_with,
+          'destroy', options.group_collection.stopListening);
+    }
 
     return options.group_collection;
   };
@@ -72,7 +84,8 @@
     vc_options = _.extend(options.vc_options || {}, {
       filter: function (model) {
         return options.groupBy(model) === group_id;
-      }
+      },
+      close_with: options.close_with
     });
 
     vc = new Backbone.VirtualCollection(options.collection, vc_options);
