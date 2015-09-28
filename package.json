@@ -14,7 +14,10 @@
     "Backbone",
     "Marionette",
     "grouped",
-    "collection"
+    "collection",
+    "virtual-collection",
+    "virtual",
+    "grouping"
   ],
   "author": "Pedro Solá <p3dro.sola@gmail.com>",
   "contributors": [
@@ -28,6 +31,6 @@
     "underscore": "~1.5.1",
     "backbone": "~1.0.0",
     "sinon": "~1.7.3",
-    "backbone-virtual-collection": "0.4.5"
+    "backbone-virtual-collection": "~0.6.0"
   }
 }
