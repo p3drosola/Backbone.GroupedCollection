@@ -34,7 +34,7 @@ var animals = new Backbone.Collection([
 ]);
 
 var grouped_animals = Backbone.buildGroupedCollection({
-  collection: animals,
+  collection: animals
 , groupBy: function (animal) {
     return animal.get('color');
   }
@@ -78,7 +78,7 @@ Somtimes you want to make sub-groups, or infinitely nested groups. For example, 
 var grouped_shopping_list = Backbone.buildGroupedCollection({
   collection: shopping_list,
 , groupBy: groupByShop
-, Group: Backbone.Model.extend({
+, GroupModel: Backbone.Model.extend({
     initialize: function (options) {
       // options.id is the group id
       // options.vc is the  virtual collection
