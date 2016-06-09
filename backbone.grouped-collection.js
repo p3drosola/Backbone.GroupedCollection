@@ -37,6 +37,7 @@
    *  - {Collection} collection (base collection)
    *  - {Function} groupby (function that returns a model's group id)
    *
+   *  - {[Function]} comparator
    *  - {[Function]} GroupModel the group model
    *  - {[Function]} GroupCollection the groups collection
    *
@@ -48,7 +49,9 @@
     needs(options, 'collection', 'The base collection to group');
     needs(options, 'groupBy', 'The function that returns a model\'s group id');
 
-    options.group_collection = new Constructor();
+    options.group_collection = new Constructor(null, {
+      comparator: options.comparator
+    });
 
     Lib._onReset(options);
     options.group_collection.listenTo(options.collection, 'add', _.partial(Lib._onAdd, options));

@@ -10,6 +10,9 @@ var assert = require("assert"),
 Backbone.VirtualCollection = require('backbone-virtual-collection');
 Backbone.buildGroupedCollection = grouped_collection.buildGroupedCollection;
 
+function byClub(model) {
+  return model.get('club');
+}
 
 describe('Backbone.GroupedCollection', function () {
   describe('#buildGroupedCollection', function () {
@@ -24,9 +27,7 @@ describe('Backbone.GroupedCollection', function () {
     it('should return an instance of GroupCollection', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert(gc instanceof grouped_collection.GroupCollection);
     });
@@ -35,9 +36,7 @@ describe('Backbone.GroupedCollection', function () {
       var MyGroupCollection = Backbone.Collection.extend({}),
       gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        },
+        groupBy: byClub,
         GroupCollection: MyGroupCollection
       });
       assert(gc instanceof MyGroupCollection);
@@ -47,9 +46,7 @@ describe('Backbone.GroupedCollection', function () {
       var MyGroupModel = Backbone.Model.extend({}),
       gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        },
+        groupBy: byClub,
         GroupModel: MyGroupModel
       });
       gc.each(function (group) {
@@ -65,9 +62,7 @@ describe('Backbone.GroupedCollection', function () {
         GroupCollection: Backbone.Collection.extend({
           stopListening: sinon.stub(),
         }),
-        groupBy: function (model) {
-          return model.get('club');
-        },
+        groupBy: byClub,
         close_with: emitter
       });
 
@@ -84,9 +79,7 @@ describe('Backbone.GroupedCollection', function () {
 
       gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        },
+        groupBy: byClub,
         close_with: emitter
       });
 
@@ -102,21 +95,28 @@ describe('Backbone.GroupedCollection', function () {
     it('groups models according to the groupBy function', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.deepEqual(gc.pluck('id').sort(), ['Penguins', 'Panthers'].sort());
       assert.equal(gc.get('Penguins').vc.length, 2);
       assert.equal(gc.get('Panthers').vc.length, 1);
     });
 
+    it('accepts a comparator function', function () {
+      var gc = Backbone.buildGroupedCollection({
+        collection: collection,
+        comparator: function (model) {
+          return model.id;
+        },
+        groupBy: byClub
+      });
+      assert.deepEqual(gc.pluck('id'), ['Panthers', 'Penguins']);
+    });
+
     it('handles adds to the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.equal(gc.get('Panthers').vc.length, 1);
       collection.add({name: 'Hillary', club: 'Panthers'});
@@ -126,9 +126,7 @@ describe('Backbone.GroupedCollection', function () {
     it('creates a new group if necesary', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       collection.add([{club: 'Penguins'}, {club: 'Rats'}]);
       assert.equal(gc.length, 3);
@@ -138,9 +136,7 @@ describe('Backbone.GroupedCollection', function () {
     it('handles remove from the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.equal(gc.get('Penguins').vc.length, 2);
       collection.remove(collection.findWhere({name: 'Bob'}));
@@ -150,9 +146,7 @@ describe('Backbone.GroupedCollection', function () {
     it('removes a group when it is empty', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.equal(gc.length, 2);
       collection.remove(collection.findWhere({club: 'Panthers'}));
@@ -163,9 +157,7 @@ describe('Backbone.GroupedCollection', function () {
     it('removes a group when it does not match the grouping condition anymore', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.equal(gc.length, 2);
       collection.get(collection.findWhere({club: 'Panthers'})).set({club: 'Penguins'});
@@ -175,9 +167,7 @@ describe('Backbone.GroupedCollection', function () {
     it('handles reset of the parent collection correctly', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
       assert.equal(gc.get('Penguins').vc.length, 2);
 
@@ -191,9 +181,7 @@ describe('Backbone.GroupedCollection', function () {
     it('handles changes to the models, what impact their grouping', function () {
       var gc = Backbone.buildGroupedCollection({
         collection: collection,
-        groupBy: function (model) {
-          return model.get('club');
-        }
+        groupBy: byClub
       });
 
       collection.findWhere({name: 'Frank'}).set({club: 'HODOR'});
