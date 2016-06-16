@@ -121,6 +121,7 @@ Object passed to the virtual collections as options. Use this to configure compa
 
 ## Changelog
 ```
+0.1.4 Added comparator option via @masylum
 0.1.3 Change package name to allow publishing on npm
 0.1.2 Add vc_options via @masylum. Fix close_with handling
 0.1.1 Add listeners for 'change', 'remove' and 'reset' only once
